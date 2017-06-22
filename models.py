@@ -1,3 +1,7 @@
+import Crypto
+from Crypto import Random
+from Crypto.PublicKey import RSA
+
 class User:
     """
     Class that represent user in system
@@ -9,3 +13,13 @@ class User:
 
     def __repr__(self):
         return 'User(%s, %s, %s)' % (self.first_name, self.last_name, self.email)
+
+class KeyGenerator:
+    """
+    Class that generates private and public keys for users
+    """
+    def __init__(self):
+        generator = Random.new().read
+        key = RSA.generate(2048,generator)
+        self.private = key.exportKey()
+        self.public = key.publickey().exportKey()
