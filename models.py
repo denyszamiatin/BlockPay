@@ -1,5 +1,6 @@
 from Crypto import Random
 from Crypto.PublicKey import RSA
+from Crypto.Random import random
 
 KEY_LENGTH = 2048
 
@@ -29,3 +30,11 @@ class KeyGenerator:
     def generate_keys(self):
         key = RSA.generate(KEY_LENGTH, self.generator)
         return key.exportKey(), key.publickey().exportKey()
+
+
+def r():
+    return random.randint(1, 10)
+
+
+def add(x, y):
+    return r()*x + y
