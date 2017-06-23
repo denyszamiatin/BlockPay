@@ -1,10 +1,12 @@
-import Crypto
 from Crypto import Random
 from Crypto.PublicKey import RSA
 
+KEY_LENGTH = 2048
+
+
 class User:
     """
-    Class that represent user in system
+    Represent user in system
     """
     def __init__(self, first_name, last_name, email):
         self.first_name = first_name
@@ -12,14 +14,18 @@ class User:
         self.email = email
 
     def __repr__(self):
-        return 'User(%s, %s, %s)' % (self.first_name, self.last_name, self.email)
+        return 'User(%s, %s, %s)' % (
+            self.first_name, self.last_name, self.email
+        )
+
 
 class KeyGenerator:
     """
-    Class that generates private and public keys for users
+    Generate private and public keys for users
     """
     def __init__(self):
-        generator = Random.new().read
-        key = RSA.generate(2048,generator)
-        self.private = key.exportKey()
-        self.public = key.publickey().exportKey()
+        self.generator = Random.new().read
+
+    def generate_keys(self):
+        key = RSA.generate(KEY_LENGTH, self.generator)
+        return key.exportKey(), key.publickey().exportKey()
