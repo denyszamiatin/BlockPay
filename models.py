@@ -13,6 +13,8 @@ class User:
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        _generator = KeyGenerator()
+        self.private_key, self.public_key = _generator.generate_keys()
 
     def __repr__(self):
         return 'User(%s, %s, %s)' % (
