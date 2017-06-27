@@ -34,6 +34,15 @@ class KeyGenerator:
         return key.exportKey(), key.publickey().exportKey()
 
 
+class CreateCoinTransaction:
+    """
+    Contain user key and coin value
+    """
+    def __init__(self, key, value):
+        self.key = key
+        self.coin_value = value
+
+
 def r():
     return random.randint(1, 10)
 
