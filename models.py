@@ -9,12 +9,13 @@ class User:
     """
     Represent user in system
     """
+    key_generator = KeyGenerator()
+
     def __init__(self, first_name, last_name, email):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        _generator = KeyGenerator()
-        self.private_key, self.public_key = _generator.generate_keys()
+        self.private_key, self.public_key = self.key_generator.generate_keys()
 
     def __repr__(self):
         return 'User(%s, %s, %s)' % (
@@ -40,12 +41,4 @@ class CreateCoinTransaction:
     """
     def __init__(self, key, value):
         self.key = key
-        self.coin_value = value
-
-
-def r():
-    return random.randint(1, 10)
-
-
-def add(x, y):
-    return r()*x + y
+        self.value = value
