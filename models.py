@@ -40,5 +40,9 @@ class CreateCoinTransaction:
     Contain user key and coin value
     """
     def __init__(self, key, value):
-        self.key = key
+        self.__key = key
         self.value = value
+
+    @property
+    def key(self):
+        return self.__key
