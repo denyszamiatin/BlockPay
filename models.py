@@ -1,6 +1,9 @@
 from Crypto import Random
 from Crypto.PublicKey import RSA
 from Crypto.Random import random
+from Crypto.Hash import SHA
+from Crypto.Signature import PKCS1_v1_5
+import pickle
 
 KEY_LENGTH = 2048
 
@@ -35,10 +38,29 @@ class KeyGenerator:
         return key.exportKey(), key.publickey().exportKey()
 
 
-class CreateCoinTransaction:
+class CoinTransactionDescriptor:
     """
     Contain user key and coin value
     """
-    def __init__(self, key, value):
-        self.key = key
-        self.value = value
+    def __init__(self, public_key, private_key, value):
+        self._value = value
+        self._public_key = public_key
+        self.hsh = SHA.new(pickle.dumps((self._public_key, self._value)))
+        signer = PKCS1_v1_5.new(RSA.importKey(private_key))
+        self.signature = signer.sign(self.hsh)
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        raise AttributeError("Cannot be modified")
+
+    @property
+    def public_key(self):
+        return self._public_key
+
+    @public_key.setter
+    def public_key (self, value):
+        raise AttributeError("Cannot be modified")
