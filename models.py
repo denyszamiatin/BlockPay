@@ -7,6 +7,18 @@ import pickle
 KEY_LENGTH = 2048
 
 
+class KeyGenerator:
+    """
+    Generate private and public keys for users
+    """
+    def __init__(self):
+        self.generator = Random.new().read
+
+    def generate_keys(self):
+        key = RSA.generate(KEY_LENGTH, self.generator)
+        return key.exportKey(), key.publickey().exportKey()
+
+
 class User:
     """
     Represent user in system
@@ -25,18 +37,6 @@ class User:
         )
 
 
-class KeyGenerator:
-    """
-    Generate private and public keys for users
-    """
-    def __init__(self):
-        self.generator = Random.new().read
-
-    def generate_keys(self):
-        key = RSA.generate(KEY_LENGTH, self.generator)
-        return key.exportKey(), key.publickey().exportKey()
-
-
 class CoinTransactionDescriptor:
     """
     Contain user key and coin value
@@ -52,31 +52,23 @@ class CoinTransactionDescriptor:
     def value(self):
         return self._value
 
-    @value.setter
-    def value(self, value):
-        raise AttributeError("Cannot be modified")
-
     @property
     def public_key(self):
         return self._public_key
-
-    @public_key.setter
-    def public_key (self, value):
-        raise AttributeError("Cannot be modified")
 
 
 class TransactionPayment:
     """
     Represent transaction payment
     """
-    def __init__(self, coin, recv_public_key):
+    def __init__(self, coin, receiver_public_key):
         self._coin = coin
-        self._recv_pub_key = recv_public_key
+        self._receiver_public_key = receiver_public_key
 
     @property
     def coin(self):
         return self._coin
 
     @property
-    def recv_public_key(self):
-        return self._recv_pub_key
+    def receiver_public_key(self):
+        return self._receiver_public_key
