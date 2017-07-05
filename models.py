@@ -65,7 +65,10 @@ class TransactionPayment:
         self._receiver_public_key = receiver_public_key
 
         self.hsh, self.signature = \
-            create_signature(self.receiver_public_key, what_signer=sender_private_key)
+            create_signature(
+                self.receiver_public_key,
+                what_signer=sender_private_key
+            )
 
     @property
     def coin(self):
