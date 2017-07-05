@@ -1,8 +1,7 @@
 from Crypto import Random
 from Crypto.PublicKey import RSA
-from Crypto.Hash import SHA
-from Crypto.Signature import PKCS1_v1_5
-import pickle
+
+from signature import create_signature
 
 KEY_LENGTH = 2048
 
@@ -44,9 +43,9 @@ class CoinTransactionDescriptor:
     def __init__(self, public_key, private_key, value):
         self._value = value
         self._public_key = public_key
-        self.hsh = SHA.new(pickle.dumps((self._public_key, self._value)))
-        signer = PKCS1_v1_5.new(RSA.importKey(private_key))
-        self.signature = signer.sign(self.hsh)
+
+        self.hsh, self.signature = \
+            create_signature(self._public_key, self._value, what_signer=private_key)
 
     @property
     def value(self):
@@ -61,9 +60,12 @@ class TransactionPayment:
     """
     Represent transaction payment
     """
-    def __init__(self, coin, receiver_public_key):
+    def __init__(self, coin, receiver_public_key, sender_private_key):
         self._coin = coin
         self._receiver_public_key = receiver_public_key
+
+        self.hsh, self.signature = \
+            create_signature(self.receiver_public_key, what_signer=sender_private_key)
 
     @property
     def coin(self):
