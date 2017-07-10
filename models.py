@@ -77,3 +77,16 @@ class TransactionPayment:
     @property
     def receiver_public_key(self):
         return self._receiver_public_key
+
+
+class TransactionsPool:
+    """
+    Contains pool of all applied transactions
+    """
+    def __init__(self):
+        self.pool = []
+    def add_coin_transaction(self, coin_transaction):
+        if isinstance(coin_transaction, CoinTransactionDescriptor):
+            self.pool.append(coin_transaction)
+        else:
+            raise ValueError("CoinTransactionDescriptor is required")
